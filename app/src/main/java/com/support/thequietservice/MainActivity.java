@@ -92,9 +92,16 @@ public class MainActivity extends AppCompatActivity {
         Log.e("onCreate", "onCreate");
     }
 
-    public void onDestroy() {
-        isConnected = false;
+    @Override
+    protected void onPause() {
         bt.stopService();
+        isConnected = false;
+        super.onPause();
+    }
+
+    public void onDestroy() {
+        bt.stopService();
+        isConnected = false;
         super.onDestroy();
         Log.e("onDestroy", "onDestroy");
     }
