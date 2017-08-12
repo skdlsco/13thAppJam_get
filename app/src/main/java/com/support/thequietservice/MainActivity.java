@@ -3,6 +3,7 @@ package com.support.thequietservice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
@@ -18,13 +19,14 @@ public class MainActivity extends AppCompatActivity {
     BluetoothSPP bt;
     String placeid = "place";
     Boolean isConnected = false;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bt = new BluetoothSPP(this);
-
+        textView = (TextView) findViewById(R.id.text);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(APIRequest.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataReceived(byte[] data, String message) {
                 Log.e("message", message);
+                textView.setText(message);
                 if (isConnected) {
                     apiRequest.Update(placeid, Integer.parseInt(message)).enqueue(new Callback<ResponseBody>() {
                         @Override
