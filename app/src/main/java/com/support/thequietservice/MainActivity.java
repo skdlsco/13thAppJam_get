@@ -19,14 +19,17 @@ public class MainActivity extends AppCompatActivity {
     BluetoothSPP bt;
     String placeid = "place";
     Boolean isConnected = false;
-    TextView textView;
+    TextView textView, textView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bt = new BluetoothSPP(this);
+
         textView = (TextView) findViewById(R.id.text);
+        textView2 = (TextView) findViewById(R.id.text2);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(APIRequest.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         bt.setBluetoothStateListener(new BluetoothSPP.BluetoothStateListener() {
             @Override
             public void onServiceStateChanged(int state) {
+                textView2.setText(String.valueOf(state));
                 if (state == 3)
                     bt.send("1", false);
             }
